@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de QR Code</title>
+</head>
+<body>
+    <h1>Envie seu arquivo para gerar um QR Code</h1>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" name="file" accept="image/*,video/*" required>
+        <button type="submit">Enviar</button>
+    </form>
+    <div id="qrCode"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+    <script>
+        $('#uploadForm').on('submit', function(e) {
+            e.preventDefault();
+            var formData = new FormData(this);
+            $.ajax({
+                url: 'upload.php', // URL do script PHP que processará o upload
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(data) {
+                    $('#qrCode').empty().qrcode(data); // Gera o QR Code com a URL do arquivo
+                }
+            });
+        });
+    </script>
+</body>
+</html>
